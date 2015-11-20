@@ -1,0 +1,28 @@
+<html ng-app="listaTelefonica">
+<head>
+	<meta charset="UTF-8">
+	<title>Lista Telefonica</title>
+	<link rel="stylesheet" href="../src/bootstrap.min.css">
+	<style>
+		.jumbotron{
+			width: 400px;
+			text-align: center;
+			margin: 0 auto;
+			margin-top: 20px;
+		}
+	</style>
+	<script src="../src/angular.min.js"></script>
+	<script>
+		angular.module("listaTelefonica", []); // o conchetes é o nome dos mudules que voce deseja importar, exemplo material designer
+		angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope){
+			$scope.app = "Lista Telefonica";
+		});
+	</script>
+</head>
+<body ng-controller="listaTelefonicaCtrl">
+	<div class="jumbotron">
+		<!--<h4 ng-bind="app"></h4> assim tambem pode ser usado-->
+		<h4>{{app}}</h4>
+	</div>
+</body>
+</html>
