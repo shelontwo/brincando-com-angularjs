@@ -16,13 +16,41 @@
 		angular.module("listaTelefonica", []); // o conchetes é o nome dos mudules que voce deseja importar, exemplo material designer
 		angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope){
 			$scope.app = "Lista Telefonica";
+			$scope.contatos = [
+				{nome: "Evandro", telefone: "3333-989898"},
+				{nome: "Maria", telefone: "4444-989898"},
+				{nome: "Joana", telefone: "5555-989898"},
+			];
 		});
 	</script>
 </head>
 <body ng-controller="listaTelefonicaCtrl">
 	<div class="jumbotron">
 		<!--<h4 ng-bind="app"></h4> assim tambem pode ser usado-->
-		<h4>{{app}}</h4>
+		<h3>{{app}}</h3>
+		<table class="table table-striped">
+			<tr>
+				<th>Nome</th>
+				<th>Telefone</th>
+			</tr>
+			<tr ng-repeat="contato in contatos">
+				<td>{{contato.nome}}</td>
+				<td>{{contato.telefone}}</td>
+			</tr>
+		</table>
+		<hr>
+		<!-- OUTRO MODO DE PRINTAR O NG REPEAT -->
+		<table class="table table-striped">
+			<tr>
+				<th>Nome</th>
+				<th>Telefone</th>
+			</tr>
+			<tr ng-repeat="contato in contatos">
+				<td ng-repeat="(key,value) in contato">
+					{{value}}
+				</td>
+			</tr>
+		</table>
 	</div>
 </body>
 </html>
