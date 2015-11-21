@@ -74,11 +74,11 @@
 			</tr>
 			<tr ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | filter:{nome: criterioDeBusca} | orderBy:criterioDeOrdenacao:direcaoDaOrdenacao">
 				<td><input type="checkbox" ng-model="contato.selecionado"></td>
-				<td>{{contato.nome | uppercase}}</td>
+				<td>{{contato.nome | uppercase | limitTo:4}}</td>
 				<td>{{contato.telefone}}</td>
 				<td>{{contato.operadora.nome | lowercase}}</td>
 				<th><div style="width:20px; height:20px;;" ng-style="{'background-color': contato.cor}"></div></th>
-				<td>{{contato.data | date:'dd/MM/yyyy HH:mm'}}</td>
+				<td>{{contato.data | date:'EEEE dd/MM/yyyy HH:mm'}}</td>
 			</tr>
 		</table>
 		<hr>
@@ -125,6 +125,7 @@
 	
 	<div ng-include="'footer.html'"></div>
 	<pre style="font-size:10px; padding:10px;">
+		Exemplos number: {{78 | number:20}}
 		{{contatos}}
 	</pre>
 </body>
