@@ -16,8 +16,9 @@
 		}
 	</style>
 	<script src="../src/angular.min.js"></script>
+	<script src="../src/messages.js"></script>
 	<script>
-		angular.module("listaTelefonica", []); // o conchetes é o nome dos mudules que voce deseja importar, exemplo material designer
+		angular.module("listaTelefonica", ['ngMessages']); // o conchetes é o nome dos mudules que voce deseja importar, exemplo material designer
 		angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope){
 			$scope.app = "Lista Telefonica";
 			$scope.contatos = [
@@ -99,11 +100,13 @@
 			<button class="btn btn-success btn-block" ng-disabled="contatoForm.$invalid" ng-click="adicionarContato(contato);">Adicionar Contato</button>
 			<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos);" ng-if="isContatoSelecionado(contatos);">Apagar Contato</button>
 		</form>
-		<div class="alert alert-danger" ng-if="contatoForm.nome.$error.required && contatoForm.nome.$dirty">
-			Por favor, preencha o nome!
-		</div>
-		<div class="alert alert-danger" ng-if="contatoForm.nome.$error.minlength">
-			O campo nome deve ter no mínimo 5 caracteres!
+		<div ng-messages="contatoForm.nome.$error"  class="alert alert-danger">
+			<div ng-message="required">
+				Por favor, preencha o nome!
+			</div>
+			<div ng-message="minlength">
+				O campo nome deve ter no mínimo 5 caracteres!
+			</div>
 		</div>
 		<div class="alert alert-danger" ng-if="contatoForm.telefone.$error.required && contatoForm.telefone.$dirty">
 			Por favor, preencha o telefone!
