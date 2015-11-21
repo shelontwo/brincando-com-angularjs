@@ -37,6 +37,7 @@
 				//Isso deixa os controller menos claras
 				$scope.contatos.push(contato);
 				delete $scope.contato; // se nao colocar esta linha, quando alterar o campo ele altera o dado da tabela tambem
+				$scope.contatoForm.$setPristine(); // o campo volta a ser virgem
 			};
 			$scope.apagarContatos = function (contatos){
 				$scope.contatos = contatos.filter(function (contato){
@@ -86,17 +87,29 @@
 			</tr>
 		</table>-->
 		<hr>
-		<input class="form-control" type="text" ng-model="contato.nome" placeholder="Nome">
-		<input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone">
-		<!--{{nome}}
-		{{telefone}} isto printa o que é digitado no formulário-->
-		<select class="form-control" name="" id="" ng-model="contato.operadora" ng-options="operadora.nome group by operadora.categoria for operadora in operadoras">
-			<option value="">Selecione uma operadora</option>
-		</select>
-		<button class="btn btn-success btn-block" ng-disabled="!contato.nome || !contato.telefone" ng-click="adicionarContato(contato);">Adicionar Contato</button>
-		<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos);" ng-if="isContatoSelecionado(contatos);">Apagar Contato</button>
-		{{contatos}}
+		<!--{{contatoForm.$valid}} validador form ou $invalid-->
+		<form name="contatoForm">
+			<input class="form-control" name="nome" type="text" ng-model="contato.nome" placeholder="Nome" ng-required="true">
+			<input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone" ng-required="true" name="telefone">
+			<!--{{nome}}
+			{{telefone}} isto printa o que é digitado no formulário-->
+			<select class="form-control" name="" id="" ng-model="contato.operadora" ng-options="operadora.nome group by operadora.categoria for operadora in operadoras">
+				<option value="">Selecione uma operadora</option>
+			</select>
+			<button class="btn btn-success btn-block" ng-disabled="contatoForm.$invalid" ng-click="adicionarContato(contato);">Adicionar Contato</button>
+			<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos);" ng-if="isContatoSelecionado(contatos);">Apagar Contato</button>
+		</form>
+		<div class="alert alert-danger" ng-if="contatoForm.nome.$invalid && contatoForm.nome.$dirty">
+			Por favor, preencha o nome!
+		</div>
+		<div class="alert alert-danger" ng-if="contatoForm.telefone.$invalid && contatoForm.telefone.$dirty">
+			Por favor, preencha o telefone!
+		</div>
 	</div>
+	
 	<div ng-include="'footer.html'"></div>
+	<pre style="font-size:10px; padding:10px;">
+		{{contatos}}
+	</pre>
 </body>
 </html>
