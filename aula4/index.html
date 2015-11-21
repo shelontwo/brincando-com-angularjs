@@ -89,7 +89,7 @@
 		<hr>
 		<!--{{contatoForm.$valid}} validador form ou $invalid-->
 		<form name="contatoForm">
-			<input class="form-control" name="nome" type="text" ng-model="contato.nome" placeholder="Nome" ng-required="true">
+			<input class="form-control" name="nome" type="text" ng-model="contato.nome" placeholder="Nome" ng-required="true"  ng-minLength="5">
 			<input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone" ng-required="true" name="telefone">
 			<!--{{nome}}
 			{{telefone}} isto printa o que é digitado no formulário-->
@@ -99,8 +99,11 @@
 			<button class="btn btn-success btn-block" ng-disabled="contatoForm.$invalid" ng-click="adicionarContato(contato);">Adicionar Contato</button>
 			<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos);" ng-if="isContatoSelecionado(contatos);">Apagar Contato</button>
 		</form>
-		<div class="alert alert-danger" ng-if="contatoForm.nome.$invalid && contatoForm.nome.$dirty">
+		<div class="alert alert-danger" ng-if="contatoForm.nome.$error.required && contatoForm.nome.$dirty">
 			Por favor, preencha o nome!
+		</div>
+		<div class="alert alert-danger" ng-if="contatoForm.nome.$error.minlength">
+			O campo nome deve ter no mínimo 5 caracteres!
 		</div>
 		<div class="alert alert-danger" ng-if="contatoForm.telefone.$invalid && contatoForm.telefone.$dirty">
 			Por favor, preencha o telefone!
