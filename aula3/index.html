@@ -56,7 +56,7 @@
 	<div class="jumbotron">
 		<!--<h4 ng-bind="app"></h4> assim tambem pode ser usado-->
 		<h3>{{app}}</h3>
-		<table class="table">
+		<table class="table" ng-show="contatos.length > 0">
 			<tr>
 				<th></th>
 				<th>Nome</th>
@@ -94,7 +94,7 @@
 			<option value="">Selecione uma operadora</option>
 		</select>
 		<button class="btn btn-success btn-block" ng-disabled="!contato.nome || !contato.telefone" ng-click="adicionarContato(contato);">Adicionar Contato</button>
-		<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos);" ng-disabled="!isContatoSelecionado(contatos);">Apagar Contato</button>
+		<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos);" ng-if="isContatoSelecionado(contatos);">Apagar Contato</button>
 		{{contatos}}
 	</div>
 </body>
