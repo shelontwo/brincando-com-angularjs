@@ -1,0 +1,124 @@
+<html ng-app="listaTelefonica">
+<head>
+	<meta charset="UTF-8">
+	<title>Lista Telefonica</title>
+	<link rel="stylesheet" href="../src/bootstrap.min.css">
+	<style>
+		.jumbotron{
+			width: 400px;
+			text-align: center;
+			margin: 0 auto;
+			margin-top: 20px;
+			padding: 10px;
+		}
+		.selecionado{
+			background: red;
+		}
+	</style>
+	<script src="../src/angular.min.js"></script>
+	<script src="../src/messages.js"></script>
+	<script>
+		angular.module("listaTelefonica", ['ngMessages']); // o conchetes é o nome dos mudules que voce deseja importar, exemplo material designer
+		angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope){
+			$scope.app = "Lista Telefonica";
+			$scope.contatos = [
+				{nome: "Evandro", telefone: "3333-989898", cor: 'red'},
+				{nome: "Maria", telefone: "4444-989898", cor: 'black'},
+				{nome: "Joana", telefone: "5555-989898", cor: 'blue'},
+			];
+			$scope.operadoras = [
+				{nome: "Oi", codigo: 14, categoria: "Celular"},
+				{nome: "Vivo", codigo: 15, categoria: "Celular"},
+				{nome: "Tim", codigo: 41, categoria: "Celular"},
+				{nome: "GVT", codigo: 25, categoria: "Fixo"},
+				{nome: "Embratel", codigo: 21, categoria: "Fixo"}
+			];
+			$scope.adicionarContato = function (contato){
+				//Evitar ler o scope dentro do controller
+				//Isso deixa os controller menos claras
+				$scope.contatos.push(contato);
+				delete $scope.contato; // se nao colocar esta linha, quando alterar o campo ele altera o dado da tabela tambem
+				$scope.contatoForm.$setPristine(); // o campo volta a ser virgem
+			};
+			$scope.apagarContatos = function (contatos){
+				$scope.contatos = contatos.filter(function (contato){
+					if(!contato.selecionado) return contato;
+				});
+			};
+			$scope.isContatoSelecionado = function (contatos){
+				return contatos.some(function (contato){
+					return contato.selecionado;
+				});
+				
+			};
+		});
+	</script>
+</head>
+<body ng-controller="listaTelefonicaCtrl">
+	<div class="jumbotron">
+		<!--<h4 ng-bind="app"></h4> assim tambem pode ser usado-->
+		<h3>{{app}}</h3>
+		<table class="table" ng-show="contatos.length > 0">
+			<tr>
+				<th></th>
+				<th>Nome</th>
+				<th>Telefone</th>
+				<th>Operadora</th>
+				<th></th>
+			</tr>
+			<tr ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos">
+				<td><input type="checkbox" ng-model="contato.selecionado"></td>
+				<td>{{contato.nome}}</td>
+				<td>{{contato.telefone}}</td>
+				<td>{{contato.operadora.nome}}</td>
+				<th><div style="width:20px; height:20px;;" ng-style="{'background-color': contato.cor}"></div></th>
+			</tr>
+		</table>
+		<hr>
+		<!-- OUTRO MODO DE PRINTAR O NG REPEAT -->
+		<!--<table class="table table-striped">
+			<tr>
+				<th>Nome</th>
+				<th>Telefone</th>
+			</tr>
+			<tr ng-repeat="contato in contatos">
+				<td ng-repeat="(key,value) in contato">
+					{{value}}
+				</td>
+			</tr>
+		</table>-->
+		<hr>
+		<!--{{contatoForm.$valid}} validador form ou $invalid-->
+		<form name="contatoForm">
+			<input class="form-control" name="nome" type="text" ng-model="contato.nome" placeholder="Nome" ng-required="true"  ng-minLength="5">
+			<input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone" ng-required="true" name="telefone" ng-pattern="/^\d{4,5}-\d{4}$/">
+			<!--{{nome}}
+			{{telefone}} isto printa o que é digitado no formulário-->
+			<select class="form-control" name="" id="" ng-model="contato.operadora" ng-options="operadora.nome group by operadora.categoria for operadora in operadoras">
+				<option value="">Selecione uma operadora</option>
+			</select>
+			<button class="btn btn-success btn-block" ng-disabled="contatoForm.$invalid" ng-click="adicionarContato(contato);">Adicionar Contato</button>
+			<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos);" ng-if="isContatoSelecionado(contatos);">Apagar Contato</button>
+		</form>
+		<div ng-messages="contatoForm.nome.$error"  class="alert alert-danger">
+			<div ng-message="required">
+				Por favor, preencha o nome!
+			</div>
+			<div ng-message="minlength">
+				O campo nome deve ter no mínimo 5 caracteres!
+			</div>
+		</div>
+		<div class="alert alert-danger" ng-if="contatoForm.telefone.$error.required && contatoForm.telefone.$dirty">
+			Por favor, preencha o telefone!
+		</div>
+		<div class="alert alert-danger" ng-if="contatoForm.telefone.$error.pattern">
+			O campo telefone deve ter o formato DDDDD-DDDD
+		</div>
+	</div>
+	
+	<div ng-include="'footer.html'"></div>
+	<pre style="font-size:10px; padding:10px;">
+		{{contatos}}
+	</pre>
+</body>
+</html>
