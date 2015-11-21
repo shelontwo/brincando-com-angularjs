@@ -21,9 +21,9 @@
 		angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope){
 			$scope.app = "Lista Telefonica";
 			$scope.contatos = [
-				{nome: "Evandro", telefone: "3333-989898"},
-				{nome: "Maria", telefone: "4444-989898"},
-				{nome: "Joana", telefone: "5555-989898"},
+				{nome: "Evandro", telefone: "3333-989898", cor: 'red'},
+				{nome: "Maria", telefone: "4444-989898", cor: 'black'},
+				{nome: "Joana", telefone: "5555-989898", cor: 'blue'},
 			];
 			$scope.operadoras = [
 				{nome: "Oi", codigo: 14, categoria: "Celular"},
@@ -38,7 +38,17 @@
 				$scope.contatos.push(contato);
 				delete $scope.contato; // se nao colocar esta linha, quando alterar o campo ele altera o dado da tabela tambem
 			};
-			$scope.classe = "selecionado";
+			$scope.apagarContatos = function (contatos){
+				$scope.contatos = contatos.filter(function (contato){
+					if(!contato.selecionado) return contato;
+				});
+			};
+			$scope.isContatoSelecionado = function (contatos){
+				return contatos.some(function (contato){
+					return contato.selecionado;
+				});
+				
+			};
 		});
 	</script>
 </head>
@@ -52,12 +62,14 @@
 				<th>Nome</th>
 				<th>Telefone</th>
 				<th>Operadora</th>
+				<th></th>
 			</tr>
 			<tr ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos">
 				<td><input type="checkbox" ng-model="contato.selecionado"></td>
 				<td>{{contato.nome}}</td>
 				<td>{{contato.telefone}}</td>
 				<td>{{contato.operadora.nome}}</td>
+				<th><div style="width:20px; height:20px;;" ng-style="{'background-color': contato.cor}"></div></th>
 			</tr>
 		</table>
 		<hr>
@@ -82,6 +94,7 @@
 			<option value="">Selecione uma operadora</option>
 		</select>
 		<button class="btn btn-success btn-block" ng-disabled="!contato.nome || !contato.telefone" ng-click="adicionarContato(contato);">Adicionar Contato</button>
+		<button class="btn btn-danger btn-block" ng-click="apagarContatos(contatos);" ng-disabled="!isContatoSelecionado(contatos);">Apagar Contato</button>
 		{{contatos}}
 	</div>
 </body>
