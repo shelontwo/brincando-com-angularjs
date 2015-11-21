@@ -22,6 +22,11 @@
 				{nome: "Maria", telefone: "4444-989898"},
 				{nome: "Joana", telefone: "5555-989898"},
 			];
+			$scope.operadoras = [
+				{nome: "Oi", codigo: 14},
+				{nome: "Vivo", codigo: 15},
+				{nome: "Tim", codigo: 41}
+			];
 			$scope.adicionarContato = function (contato){
 				//Evitar ler o scope dentro do controller
 				//Isso deixa os controller menos claras
@@ -39,10 +44,12 @@
 			<tr>
 				<th>Nome</th>
 				<th>Telefone</th>
+				<th>Operadora</th>
 			</tr>
 			<tr ng-repeat="contato in contatos">
 				<td>{{contato.nome}}</td>
 				<td>{{contato.telefone}}</td>
+				<td>{{contato.operadora.nome}}</td>
 			</tr>
 		</table>
 		<hr>
@@ -63,6 +70,9 @@
 		<input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone">
 		<!--{{nome}}
 		{{telefone}} isto printa o que é digitado no formulário-->
+		<select class="form-control" name="" id="" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras">
+			<option value="">Selecione uma operadora</option>
+		</select>
 		<button class="btn btn-success btn-block" ng-disabled="!contato.nome || !contato.telefone" ng-click="adicionarContato(contato);">Adicionar Contato</button>
 		{{contato}}
 	</div>
